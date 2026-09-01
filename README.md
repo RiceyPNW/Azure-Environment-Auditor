@@ -1,3 +1,3 @@
 # Azure Environment Auditor
 
-A Python project for querying and auditing resources in a personal Microsoft Azure environment.
+A Python tool that connects to a Microsoft Azure subscription and inventories selected resources using the Azure SDK.
