@@ -16,15 +16,14 @@ def build_report():
 
     credential = get_credential()
 
-
     report = {
         "resource_groups": get_resource_groups(
-        credential,
-        subscription_id
+            credential,
+            subscription_id
         ),
         "static_web_apps": get_static_web_apps(
-        credential,
-        subscription_id
+            credential,
+            subscription_id
         )
     }
 
@@ -32,18 +31,19 @@ def build_report():
 
     return report
 
-def display_report(report):
 
+def display_report(report):
     print("\nAZURE ENVIRONMENT AUDIT")
     print("=" * 50)
 
     print(f"Resource Groups: {len(report['resource_groups'])}")
     print(f"Static Web Apps: {len(report['static_web_apps'])}")
+    print(f"Findings: {len(report['findings'])}")
 
     print("\nRESOURCE GROUPS")
     print("=" * 50)
 
-    for group in report['resource_groups']:
+    for group in report["resource_groups"]:
         print(f"Name: {group['name']}")
         print(f"Location: {group['location']}")
         print(f"Tags: {group['tags']}")
@@ -52,7 +52,7 @@ def display_report(report):
     print("\nSTATIC WEB APPS")
     print("=" * 50)
 
-    for app in report['static_web_apps']:
+    for app in report["static_web_apps"]:
         print(f"Name: {app['name']}")
         print(f"Resource Group: {app['resource_group']}")
         print(f"Location: {app['location']}")
@@ -75,11 +75,22 @@ def display_report(report):
             )
 
 
+def display_github_summary(report):
+    print("\nAZURE ENVIRONMENT AUDIT")
+    print("=" * 50)
+    print(f"Resource Groups: {len(report['resource_groups'])}")
+    print(f"Static Web Apps: {len(report['static_web_apps'])}")
+    print(f"Findings: {len(report['findings'])}")
+    print("Audit completed successfully.")
+
+
 if __name__ == "__main__":
     report = build_report()
 
-    display_report(report)
+    if report:
+        if os.getenv("GITHUB_ACTIONS") == "true":
+            display_github_summary(report)
+        else:
+            display_report(report)
 
-    output_file = save_report_json(report)
-
-    print(f"\nReport saved to: {output_file}")
+        save_report_json(report)

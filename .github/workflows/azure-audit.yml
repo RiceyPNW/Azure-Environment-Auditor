@@ -38,9 +38,3 @@ jobs:
         env:
           AZURE_SUBSCRIPTION_ID: ${{ vars.AZURE_SUBSCRIPTION_ID }}
         run: python main.py
-
-      - name: Upload audit report
-        uses: actions/upload-artifact@v4
-        with:
-          name: azure-environment-report
-          path: reports/azure_report.json
